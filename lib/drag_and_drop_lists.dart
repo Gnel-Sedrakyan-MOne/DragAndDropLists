@@ -24,6 +24,7 @@ import 'package:drag_and_drop_lists/drag_handle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:smooth/smooth.dart';
 
 export 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_item.dart';
@@ -279,7 +280,7 @@ class DragAndDropLists extends StatefulWidget {
   /// the vertical axis. By default this is set to true. This may be useful to
   /// disable when setting customDragTargets
   final bool constrainDraggingAxis;
-  
+
   /// If you put a widget before DragAndDropLists there's an unexpected padding
   /// before the list renders. This is the default behaviour for ListView which
   /// is used internally. To remove the padding, set this field to true
@@ -493,10 +494,14 @@ class DragAndDropListsState extends State<DragAndDropLists> {
 
   Widget _buildListView(DragAndDropBuilderParameters parameters,
       DragAndDropListTarget dragAndDropListTarget) {
-    Widget _listView = ListView(
-      scrollDirection: widget.axis,
-      controller: _scrollController,
-      children: _buildOuterList(dragAndDropListTarget, parameters),
+    bool includeSeparators = widget.listDivider != null;
+    int childrenCount = _calculateChildrenCount(includeSeparators);
+    Widget _listView = SmoothListView.builder(
+      itemBuilder: (_, index) {
+        return _buildInnerList(index, childrenCount, dragAndDropListTarget,
+            includeSeparators, parameters);
+      },
+      itemCount: childrenCount,
     );
 
     return widget.removeTopPadding

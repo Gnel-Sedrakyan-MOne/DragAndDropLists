@@ -4,12 +4,19 @@ version: 0.3.3
 homepage: https://github.com/philip-brink/DragAndDropLists
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
-  flutter: '>=3.0.0'
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=3.0.0"
+
+publish_to: none
 
 dependencies:
   flutter:
     sdk: flutter
+
+  smooth:
+    git:
+      url: https://github.com/fzyzcjy/flutter_smooth
+      path: packages/smooth
 
 dev_dependencies:
   flutter_test:
